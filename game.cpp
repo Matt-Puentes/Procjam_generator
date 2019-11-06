@@ -26,21 +26,19 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        
-        sf::CircleShape shape(50);
-        shape.setFillColor(sf::Color(100, 250, 50));
+
         std::vector<Room*> rooms;
         rooms.push_back(new Room(new sf::CircleShape(50)));
-        rooms.push_back(new Room(new sf::RectangleShape()));
+        rooms.push_back(new Room(new sf::RectangleShape(sf::Vector2f(50, 50)), sf::Vector2f(200, 200)));
+
         Map map = Map(rooms);
+
         // Clear screen
         window.clear();
         // Draw the sprite
         window.draw(sprite);
-        // Draw the string
-        window.draw(text);
-        // Draw Circle
-        window.draw(shape);
+        // // Draw the string
+        // window.draw(text);
         // Draw Map
         map.drawToWindow(&window);
         // Update the window

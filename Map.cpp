@@ -16,5 +16,14 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
     for(int i = 0; i < rooms.size(); i++){
         window -> draw(*(rooms[i] -> getShape()));
     }
+
+    for(int i = 0; i < rooms.size() - 1; i++){
+        
+        sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(rooms[i] -> getShape() -> getPosition())),
+            sf::Vertex(sf::Vector2f(rooms[i + 1] -> getShape() -> getPosition()))
+        };
+        window -> draw(line, 10, sf::Lines);
+    };
     return 1;
 }
