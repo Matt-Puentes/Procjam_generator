@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Map.h"
 
 int main()
 {
@@ -25,8 +26,13 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
+        
         sf::CircleShape shape(50);
         shape.setFillColor(sf::Color(100, 250, 50));
+        std::vector<Room*> rooms;
+        rooms.push_back(new Room(new sf::CircleShape(50)));
+        rooms.push_back(new Room(new sf::RectangleShape()));
+        Map map = Map(rooms);
         // Clear screen
         window.clear();
         // Draw the sprite
@@ -35,6 +41,8 @@ int main()
         window.draw(text);
         // Draw Circle
         window.draw(shape);
+        // Draw Map
+        map.drawToWindow(&window);
         // Update the window
         window.display();
     }

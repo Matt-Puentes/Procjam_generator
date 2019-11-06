@@ -2,6 +2,8 @@ CC= g++
 LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 
 SRC= game.cpp \
+Map.cpp \
+Room.cpp \
 
 EXECUTABLE= game
 

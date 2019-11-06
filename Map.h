@@ -7,5 +7,6 @@ class Map {
     public:
         Map();
         Map(std::vector<Room*> rooms);
-        std::vector<Room*> getRooms();
+        std::vector<Room*> getRooms() const;
+        int drawToWindow(sf::RenderWindow *window) const;
 };
