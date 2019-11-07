@@ -4,6 +4,7 @@ LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 SRC= game.cpp \
 Map.cpp \
 Room.cpp \
+MapMaker.cpp \
 
 EXECUTABLE= game
 
