@@ -11,4 +11,5 @@ class Room {
         ~Room();
         sf::Shape *getShape() const;
         std::vector<Room*> getNeighbors() const;
+        sf::Vector2f getPos() const;
 };

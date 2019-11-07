@@ -20,8 +20,8 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
     for(int i = 0; i < rooms.size() - 1; i++){
         
         sf::Vertex line[] = {
-            sf::Vertex(sf::Vector2f(rooms[i] -> getShape() -> getPosition())),
-            sf::Vertex(sf::Vector2f(rooms[i + 1] -> getShape() -> getPosition()))
+            sf::Vertex(sf::Vector2f(rooms[i] -> getPos())),
+            sf::Vertex(sf::Vector2f(rooms[i + 1] -> getPos()))
         };
         window -> draw(line, 10, sf::Lines);
     };
