@@ -3,7 +3,7 @@
 class MapMaker {
     public:
         MapMaker();
-        Map* getMap();
+        virtual Map* getMap();
     private:
         int mapsMade;
 };

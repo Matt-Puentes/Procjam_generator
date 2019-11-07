@@ -36,9 +36,7 @@ int main()
         // Clear screen
         window.clear();
         // Draw the sprite
-        window.draw(sprite);
-        // // Draw the string
-        // window.draw(text);
+        window.clear(sf::Color::Black);
         // Draw Map
         map.drawToWindow(&window);
         // Update the window

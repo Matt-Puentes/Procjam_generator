@@ -17,13 +17,13 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
         window -> draw(*(rooms[i] -> getShape()));
     }
 
+    // TODO: Make these pretty rectangles with width.
     for(int i = 0; i < rooms.size() - 1; i++){
-        
         sf::Vertex line[] = {
             sf::Vertex(sf::Vector2f(rooms[i] -> getPos())),
             sf::Vertex(sf::Vector2f(rooms[i + 1] -> getPos()))
         };
-        window -> draw(line, 10, sf::Lines);
+        window -> draw(line, 2, sf::Lines);
     };
     return 1;
 }
