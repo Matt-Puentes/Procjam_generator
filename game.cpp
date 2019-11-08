@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
+#include "MapMaker.h"
 
 int main()
 {
@@ -11,9 +12,11 @@ int main()
     if (!font.loadFromFile("fonts/df-font.ttf"))
         return EXIT_FAILURE;
 
+
+    MapMaker mapmaker = MapMaker();
     // Start the game loop
-    while (window.isOpen())
-    {
+    while (window.isOpen()){
+        Map *map = mapmaker.getMap(800, 600);
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -23,26 +26,29 @@ int main()
                 window.close();
         }
 
-        std::vector<Room*> rooms;
-		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(100, 100)));
-		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(400, 100)));
-		rooms.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 450)));
-		rooms.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(150, 450)));
-		rooms.push_back(new Room(Room::ROOM_CIRCLE, sf::Vector2f(150, 300)));
-		rooms.push_back(new Room(Room::ROOM_TRIANGLE, sf::Vector2f(150, 150)));
-		rooms.push_back(new Room(Room::ROOM_WIDE, sf::Vector2f(400, 100)));
-		rooms.push_back(new Room(Room::ROOM_LONG, sf::Vector2f(700, 300)));
-        rooms.push_back(new Room(Room::ROOM_BIG));
-        Map map = Map(rooms);
+        // std::vector<Room*> rooms;
+		// rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(100, 100)));
+		// rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(400, 100)));
+		// rooms.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 450)));
+		// rooms.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(150, 450)));
+		// rooms.push_back(new Room(Room::ROOM_CIRCLE, sf::Vector2f(150, 300)));
+		// rooms.push_back(new Room(Room::ROOM_TRIANGLE, sf::Vector2f(150, 150)));
+		// rooms.push_back(new Room(Room::ROOM_WIDE, sf::Vector2f(400, 100)));
+		// rooms.push_back(new Room(Room::ROOM_LONG, sf::Vector2f(700, 300)));
+        // rooms.push_back(new Room(Room::ROOM_BIG));
+        // Map map = Map(rooms);
+
 
         // Clear screen
         window.clear(sf::Color::Black);
 
         // Draw Map
-        map.drawToWindow(&window);
+        map -> drawToWindow(&window);
 
         // Update the window
         window.display();
+
+        sf::sleep(sf::seconds(1));
     }
     return EXIT_SUCCESS;
 }

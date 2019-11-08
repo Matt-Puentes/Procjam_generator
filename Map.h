@@ -1,3 +1,6 @@
+#ifndef __MAP_H__
+#define __MAP_H__
+
 #include "Room.h"
 #include <SFML/Graphics.hpp>
 
@@ -10,3 +13,5 @@ class Map {
         std::vector<Room*> getRooms() const;
         int drawToWindow(sf::RenderWindow *window) const;
 };
+
+#endif

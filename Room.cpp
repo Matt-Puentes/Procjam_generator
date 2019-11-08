@@ -60,12 +60,12 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     }
     //int width = rand() % (width_range_high - width_range_low) + width_range_low;
     //int height = rand() % (height_range_high - height_range_low) + height_range_low;
-
     // sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(50, 50)), sf::Vector2f(200, 200));
+	//shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
 
     position = init_pos;
-	//shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
-    neighbor_num = rand() % 2;
+    neighbor_num = 3; //rand() % 3;
+    printf("Neighbor Number %d\n", neighbor_num);
 }
 
 
@@ -79,6 +79,10 @@ sf::Shape *Room::getShape() const{
 
 std::vector<Room*> Room::getNeighbors() const{
     return neighbors;
+}
+
+void Room::addNeighbor(Room* room){
+    neighbors.push_back(room);
 }
 
 sf::Vector2f Room::getPos() const{
