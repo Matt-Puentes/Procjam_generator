@@ -24,8 +24,9 @@ int main()
         }
 
         std::vector<Room*> rooms;
-		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(400, 300)));
-        Map map = Map(rooms);
+		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(100, 100)));
+		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(400, 100)));
+		Map map = Map(rooms);
 
         // Clear screen
         window.clear(sf::Color::Black);
