@@ -1,4 +1,7 @@
 #include <vector>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include <SFML/Graphics.hpp>
 #include <ctime>    // For time()
 #include <cstdlib>  // For srand() and rand()
@@ -9,7 +12,7 @@ class Room {
         sf::Vector2f position;
         sf::Shape *shape;
 
-		void makeRoomBig(sf::Vector2f init_pos);
+		void makeRoomBig(sf::Vector2f init_pos, int min_width, int max_width, int min_height, int max_height);
 		void makeRoomSmall(sf::Vector2f init_pos);
 		void makeRoomCircle(sf::Vector2f init_pos);
 		void makeRoomTriangle(sf::Vector2f init_pos);
