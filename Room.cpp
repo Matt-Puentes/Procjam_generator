@@ -19,46 +19,60 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     int height_range_high = 0;
     switch(room_type){
             case ROOM_BIG : 
-                printf("BIG");
+                printf("BIG\n");
                 width_range_low = 50;
                 width_range_high = 200;
+                height_range_high = 50;
+                height_range_low = 20;
             break;
             case ROOM_SMALL : 
-                printf("SMALL");
+                printf("SMALL\n");
                 width_range_low = 50;
                 width_range_high = 200;
+                height_range_high = 50;
+                height_range_low = 20;
             break;
             case ROOM_CIRCLE : 
-                printf("CIRCLE");
+                printf("CIRCLE\n");
                 width_range_low = 50;
                 width_range_high = 200;
+                height_range_high = 50;
+                height_range_low = 20;
             break;
             case ROOM_TRIANGLE : 
-                printf("TRIANGLE");
+                printf("TRIANGLE\n");
                 width_range_low = 50;
                 width_range_high = 200;
+                height_range_high = 50;
+                height_range_low = 20;
             break;
             case ROOM_LONG : 
-                printf("LONG");
+                printf("LONG\n");
                 width_range_low = 50;
                 width_range_high = 200;
+                height_range_high = 50;
+                height_range_low = 20;
             break;
             case ROOM_WIDE : 
-                printf("WIDE");
+                printf("WIDE\n");
                 width_range_low = 50;
                 width_range_high = 200;
+                height_range_high = 50;
+                height_range_low = 20;
             break;
             default:
-                printf("Default");
+                printf("Default\n");
             break;
     }
+    printf("%d, %d\n", width_range_high, width_range_low);
     int width = rand() % (width_range_high - width_range_low) + width_range_low;
     int height = rand() % (height_range_high - height_range_low) + height_range_low;
-
-    // sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(50, 50)), sf::Vector2f(200, 200));
-
+    sf::RectangleShape* rectangle = new sf::RectangleShape(sf::Vector2f(width, height));
+    rectangle -> setPosition(sf::Vector2f(200, 200));
     position = init_pos;
+    shape = rectangle;
     shape -> setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape -> getLocalBounds().height / 2)));
+    printf("Helloooo \n");
 }
 
 
@@ -67,6 +81,7 @@ Room::~Room(){
 }
 
 sf::Shape *Room::getShape() const{
+    printf("Shape get\n");
     return shape;
 }
 
@@ -75,5 +90,6 @@ std::vector<Room*> Room::getNeighbors() const{
 }
 
 sf::Vector2f Room::getPos() const{
+    printf("Hello\n");
     return position;
 }
