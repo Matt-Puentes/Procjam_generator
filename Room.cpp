@@ -1,11 +1,11 @@
 #include "Room.h"
 #include <stdio.h>
 
-// Room::Room(sf::Shape *room_shape, sf::Vector2f init_pos){
-//     shape = room_shape;
-//     position = init_pos;
-//     shape -> setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape -> getLocalBounds().height / 2)));
-// }
+Room::Room(sf::Shape *room_shape, sf::Vector2f init_pos){
+    shape = room_shape;
+    position = init_pos;
+    shape -> setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape -> getLocalBounds().height / 2)));
+}
 
 
 sf::Vector2f get_random_position(){

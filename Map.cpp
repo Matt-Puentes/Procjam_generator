@@ -18,7 +18,7 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
     }
 
     // TODO: Make these pretty rectangles with width.
-    for(int i = 0; i < rooms.size() - 1; i++){
+    for(int i = 0; i < ((int)rooms.size()) - 1; i++){
         sf::Vertex line[] = {
             sf::Vertex(sf::Vector2f(rooms[i] -> getPos())),
             sf::Vertex(sf::Vector2f(rooms[i + 1] -> getPos()))
