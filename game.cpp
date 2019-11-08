@@ -24,32 +24,21 @@ int main()
         }
 
         std::vector<Room*> rooms;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(100, 100)));
 		rooms.push_back(new Room(new sf::CircleShape(50), sf::Vector2f(400, 100)));
-=======
 		rooms.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 450)));
 		rooms.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(150, 450)));
 		rooms.push_back(new Room(Room::ROOM_CIRCLE, sf::Vector2f(150, 300)));
 		rooms.push_back(new Room(Room::ROOM_TRIANGLE, sf::Vector2f(150, 150)));
 		rooms.push_back(new Room(Room::ROOM_WIDE, sf::Vector2f(400, 100)));
 		rooms.push_back(new Room(Room::ROOM_LONG, sf::Vector2f(700, 300)));
->>>>>>> 4d14c5ea8099dd8abb6acc92eaa69d458c33453d
-		Map map = Map(rooms);
-=======
         rooms.push_back(new Room(Room::ROOM_BIG));
         Map map = Map(rooms);
->>>>>>> Stashed changes
 
         // Clear screen
         window.clear(sf::Color::Black);
 
         // Draw Map
-<<<<<<< Updated upstream
-=======
-        printf("Drawing Map\n");
->>>>>>> Stashed changes
         map.drawToWindow(&window);
 
         // Update the window
