@@ -4,7 +4,7 @@
 int main()
 {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML window");
 
     // Create a graphical text to display
     sf::Font font;
@@ -12,8 +12,10 @@ int main()
         return EXIT_FAILURE;
 
 	std::vector<Room*> test_procgen_room;
-	test_procgen_room.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(150, 450)));
-	test_procgen_room.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 300)));
+	test_procgen_room.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 500)));
+	test_procgen_room.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 200), false));
+	test_procgen_room.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(200, 200), false));
+	test_procgen_room.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(600, 200), true));
 
 	Map map = Map(test_procgen_room);
 
@@ -29,14 +31,13 @@ int main()
                 window.close();
         }
 
-        std::vector<Room*> rooms;
-		rooms.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 450)));
-		rooms.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(150, 450)));
-		rooms.push_back(new Room(Room::ROOM_CIRCLE, sf::Vector2f(150, 300)));
-		rooms.push_back(new Room(Room::ROOM_TRIANGLE, sf::Vector2f(150, 150)));
-		rooms.push_back(new Room(Room::ROOM_WIDE, sf::Vector2f(400, 100)));
-		rooms.push_back(new Room(Room::ROOM_LONG, sf::Vector2f(700, 300)));
-		
+		//std::vector<Room*> rooms;
+		//rooms.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 450)));
+		//rooms.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(150, 450)));
+		//rooms.push_back(new Room(Room::ROOM_CIRCLE, sf::Vector2f(150, 300)));
+		//rooms.push_back(new Room(Room::ROOM_TRIANGLE, sf::Vector2f(150, 150)));
+		//rooms.push_back(new Room(Room::ROOM_WIDE, sf::Vector2f(400, 100)));
+		//rooms.push_back(new Room(Room::ROOM_LONG, sf::Vector2f(700, 300)));
 		
 
         // Clear screen

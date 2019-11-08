@@ -12,8 +12,8 @@ class Room {
         sf::Vector2f position;
         sf::Shape *shape;
 
-		void makeRoomBig(sf::Vector2f init_pos, int min_width, int max_width, int min_height, int max_height);
-		void makeRoomSmall(sf::Vector2f init_pos);
+		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect = true);
+		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect = true);
 		void makeRoomCircle(sf::Vector2f init_pos);
 		void makeRoomTriangle(sf::Vector2f init_pos);
 		void makeRoomLong(sf::Vector2f init_pos);
@@ -30,7 +30,7 @@ class Room {
             ROOM_WIDE
         };
         Room(sf::Shape *room_shape, sf::Vector2f init_pos = sf::Vector2f(0, 0));
-        Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0));
+        Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0), bool rect = true);
         ~Room();
         sf::Shape *getShape() const;
         std::vector<Room*> getNeighbors() const;
