@@ -15,7 +15,7 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     switch(room_type){
             case ROOM_BIG : 
 				makeRoomBig(init_pos, 50, 150);
-            break;
+			break;
             case ROOM_SMALL : 
                 makeRoomSmall(init_pos, 20, 50);
             break;
@@ -37,6 +37,8 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     }
 
   	position = init_pos;
+	shape->setFillColor(getRandomColor());
+
     neighbor_num = rand() % 2;
     neighbors.push_back(NULL);
     neighbors.push_back(NULL);
@@ -77,7 +79,7 @@ sf::Vector2f Room::getPos() const{
 }
 
 void Room::makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect){
-	srand(time(0));
+	//srand(time(NULL));
 	
 	if (rect){
 		int width = rand() % (max_size - min_size) + min_size;
@@ -106,7 +108,7 @@ void Room::makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool r
 }
 
 void Room::makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect) {
-	srand(time(0));
+	//srand(time(0));
 
 	if (rect) {
 		int width = rand() % (max_size - min_size) + min_size;
@@ -135,7 +137,7 @@ void Room::makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool
 }
 
 void Room::makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size) {
-	srand(time(0));
+	//srand(time(0));
 	int r_x = (rand() % (max_size - min_size)) + min_size;
 	int r_y = (rand() % (max_size - min_size)) + min_size;
 	shape = new EllipseShape(sf::Vector2f(r_x, r_y));
@@ -162,7 +164,7 @@ int Room::getNeighborCount() const{
 }
 
 void Room::makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size) {
-	srand(time(0));
+	//srand(time(0));
 	
 	sf::ConvexShape* triangle_room = new sf::ConvexShape();
 
@@ -182,7 +184,7 @@ void Room::makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size) {
 }
 
 void Room::makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min) {
-	srand(time(0));
+	//srand(time(0));
 	int x = (rand() % (width_max - width_min)) + width_min;
 	int y = (rand() % (height_max - height_min)) + height_min;
 	shape = new sf::RectangleShape(sf::Vector2f(x, y));
@@ -190,4 +192,14 @@ void Room::makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int
 
 	neighbor_num = 2;
     neighbor_num = rand() % 2;
+}
+
+sf::Color Room::getRandomColor() {
+	//srand(time(0));
+
+	int r = rand() % 255;
+	int g = rand() % 255;
+	int b = rand() % 255;
+
+	return sf::Color(r, g, b);
 }

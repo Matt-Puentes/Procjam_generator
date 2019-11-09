@@ -13,8 +13,8 @@ class Room {
         sf::Vector2f position;
         sf::Shape *shape;
 
-		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect = true);
-		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect = true);
+		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect = false);
+		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect = false);
 		void makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size);
 		void makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size);
 		void makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min);
@@ -37,7 +37,6 @@ class Room {
             ROOT
         };
         Room(sf::Shape *room_shape, sf::Vector2f init_pos = sf::Vector2f(0, 0));
-        // Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0), bool rect = true);
         Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0));
         Room(Room::RoomType room_type, Room* parent, RoomDirection dir_from_parent);
         ~Room();
@@ -48,4 +47,5 @@ class Room {
         void setPos(sf::Vector2f new_pos);
         bool addNeighbor(Room* room, RoomDirection dir);
         int neighbor_num;
+		sf::Color getRandomColor();
 };
