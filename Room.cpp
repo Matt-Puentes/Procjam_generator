@@ -11,7 +11,6 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     if(room_type == ROOM_UNDEFINED){
         room_type = static_cast<Room::RoomType>(rand() % ROOM_UNDEFINED);
     }
-
     switch(room_type){
             case ROOM_BIG : 
 				makeRoomBig(init_pos, 50, 150);
@@ -37,17 +36,78 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     }
 
   	position = init_pos;
-	shape->setFillColor(getRandomColor());
-
+  	shape->setFillColor(getRandomColor());
+ 
     neighbor_num = rand() % 2;
-    neighbors.push_back(NULL);
-    neighbors.push_back(NULL);
-    neighbors.push_back(NULL);
-    neighbors.push_back(NULL);
 }
 
-Room::Room(Room::RoomType room_type, Room* parent, RoomDirection dir_from_parent){
+Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* parent){
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    int distance_x = -1;
+    int distance_y = -1;
+    if(parent != NULL){
+        distance_x = (rand() % 25) + parent -> getShape() -> getLocalBounds().width;
+        distance_y = (rand() % 25) + parent -> getShape() -> getLocalBounds().height;
+    }
+    printf("distance: %d, %d\n", distance_x, distance_y);
+    sf::Vector2f init_pos = sf::Vector2f(1920 / 2, 1080 / 2);
 
+    switch(dir_from_parent){
+        case Room::UP_FROM_PARENT:
+            init_pos.x = parent -> getPos().x;
+            init_pos.y = parent -> getPos().y + distance_y;
+            neighbors[DOWN_FROM_PARENT] = parent;
+        break; 
+        case Room::DOWN_FROM_PARENT:
+            init_pos.x = parent -> getPos().x;
+            init_pos.y = parent -> getPos().y - distance_y;
+            neighbors[UP_FROM_PARENT] = parent;
+        break; 
+        case Room::LEFT_FROM_PARENT:
+            init_pos.x = parent -> getPos().x + distance_x;
+            init_pos.y = parent -> getPos().y;
+            neighbors[RIGHT_FROM_PARENT] = parent;
+        break; 
+        case Room::RIGHT_FROM_PARENT:
+            init_pos.x = parent -> getPos().x - distance_x;
+            init_pos.y = parent -> getPos().y;
+            neighbors[LEFT_FROM_PARENT] = parent;
+        break; 
+        default:
+        break;
+    }
+
+    if(room_type == ROOM_UNDEFINED){
+        room_type = static_cast<Room::RoomType>(rand() % ROOM_UNDEFINED);
+    }
+    switch(room_type){
+            case ROOM_BIG : 
+				makeRoomBig(init_pos, 50, 150);
+            break;
+            case ROOM_SMALL : 
+                makeRoomSmall(init_pos, 20, 50);
+            break;
+            case ROOM_CIRCLE : 
+				makeRoomCircle(init_pos, 10, 200);
+            break;
+            case ROOM_TRIANGLE : 
+				makeRoomTriangle(init_pos, 50, 150);
+            break;
+            case ROOM_LONG : 
+				makeRoomLong(init_pos, 20, 10, 200, 100);
+            break;
+            case ROOM_WIDE : 
+				makeRoomLong(init_pos, 200, 100, 20, 10);
+            break;
+            default:
+                printf("Default");
+            break;
+    }
+
+    position = init_pos;
 }
 
 Room::~Room(){
@@ -70,8 +130,21 @@ bool Room::addNeighbor(Room* room, RoomDirection dir){
         return true;
     }
     return false;
-    return true;
-    // neighbors.push_back(room);
+}
+
+std::vector<Room::RoomDirection> Room::getFreeDirections(){
+    std::vector<Room::RoomDirection> freeDirs;
+
+    if(neighbors[Room::UP_FROM_PARENT] == NULL)
+        freeDirs.push_back(Room::UP_FROM_PARENT);
+    if(neighbors[Room::DOWN_FROM_PARENT] == NULL)
+        freeDirs.push_back(Room::DOWN_FROM_PARENT);
+    if(neighbors[Room::RIGHT_FROM_PARENT] == NULL)
+        freeDirs.push_back(Room::RIGHT_FROM_PARENT);
+    if(neighbors[Room::LEFT_FROM_PARENT] == NULL)
+        freeDirs.push_back(Room::LEFT_FROM_PARENT);
+
+    return freeDirs;
 }
 
 sf::Vector2f Room::getPos() const{
@@ -79,8 +152,6 @@ sf::Vector2f Room::getPos() const{
 }
 
 void Room::makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect){
-	//srand(time(NULL));
-	
 	if (rect){
 		int width = rand() % (max_size - min_size) + min_size;
 		int height = rand() % (max_size - min_size) + min_size;
@@ -108,8 +179,6 @@ void Room::makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool r
 }
 
 void Room::makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect) {
-	//srand(time(0));
-
 	if (rect) {
 		int width = rand() % (max_size - min_size) + min_size;
 		int height = rand() % (max_size - min_size) + min_size;
@@ -137,7 +206,6 @@ void Room::makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool
 }
 
 void Room::makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size) {
-	//srand(time(0));
 	int r_x = (rand() % (max_size - min_size)) + min_size;
 	int r_y = (rand() % (max_size - min_size)) + min_size;
 	shape = new EllipseShape(sf::Vector2f(r_x, r_y));
@@ -164,8 +232,6 @@ int Room::getNeighborCount() const{
 }
 
 void Room::makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size) {
-	//srand(time(0));
-	
 	sf::ConvexShape* triangle_room = new sf::ConvexShape();
 
 	int points = 3;
@@ -184,18 +250,15 @@ void Room::makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size) {
 }
 
 void Room::makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min) {
-	//srand(time(0));
 	int x = (rand() % (width_max - width_min)) + width_min;
 	int y = (rand() % (height_max - height_min)) + height_min;
 	shape = new sf::RectangleShape(sf::Vector2f(x, y));
 	shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
 
-	neighbor_num = 2;
     neighbor_num = rand() % 2;
 }
 
 sf::Color Room::getRandomColor() {
-	//srand(time(0));
 
 	int r = rand() % 255;
 	int g = rand() % 255;
