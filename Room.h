@@ -7,18 +7,6 @@
 #include "Ellipse.h"
 
 class Room { 
-    private:
-        std::vector<Room*> neighbors;
-        
-        sf::Vector2f position;
-        sf::Shape *shape;
-
-		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect = false);
-		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect = false);
-		void makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size);
-		void makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size);
-		void makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min);
-
     public:
         enum RoomType {
             ROOM_BIG,
@@ -36,17 +24,31 @@ class Room {
             RIGHT_FROM_PARENT,
             ROOT
         };
-        Room(sf::Shape *room_shape, sf::Vector2f init_pos = sf::Vector2f(0, 0));
-        Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0));
         Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* parent = NULL);
         ~Room();
+
+        std::vector<Room*> neighbors;
+        RoomDirection dir;
+        Room *parent;
+        int neighbor_num;
+
         sf::Shape *getShape() const;
         std::vector<Room*> getNeighbors() const;
+        void setNeighbor(Room::RoomDirection dir, Room* room);
         int getNeighborCount() const;
         sf::Vector2f getPos() const;
         void setPos(sf::Vector2f new_pos);
         bool addNeighbor(Room* room, RoomDirection dir);
         std::vector<Room::RoomDirection> getFreeDirections();
-        int neighbor_num;
 		sf::Color getRandomColor();
+
+    private:
+        sf::Vector2f position;
+        sf::Shape *shape;
+
+		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size);
+		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size);
+		void makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size);
+		void makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size);
+		void makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min);
 };

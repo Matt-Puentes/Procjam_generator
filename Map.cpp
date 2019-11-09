@@ -24,22 +24,35 @@ std::vector<Room*> Map::getRooms() const{
 }
 
 bool Map::addRoom(Room* new_room){
-    int xpos = new_room -> getPos().x;
-    int ypos = new_room -> getPos().y;
-    int x_roomwidth_pos = xpos / normalRoomWidth;
-    int y_roomwidth_pos = ypos / normalRoomWidth;
-
-    bool collision = false;
-
-    usedPositions.push_back(sf::Vector2f(x_roomwidth_pos, y_roomwidth_pos));
+    // sf::FloatRect new_globalBounds = new_room -> getShape() -> getGlobalBounds();
+    // Room* collision = 0;
+    // for(int i = 0; i < rooms.size(); i++){
+    //     sf::FloatRect globalBounds = rooms[i] -> getShape() -> getGlobalBounds();
+    //     if(globalBounds.intersects(new_globalBounds)){
+    //         collision = rooms[i];
+    //         break;
+    //     }
+    // }
+    
+    // if(collision){
+    //     printf("Collision!\n");
+    //     if(new_room -> parent != NULL){
+    //         printf("Collision!!\n");
+    //         for(int i = 0; i < new_room -> parent -> neighbors.size(); i++){
+    //             printf("ok....\n");
+    //             printf("ok.... %lu\n", new_room -> parent -> neighbors.size());
+    //             printf("ok.... %d\n", new_room -> parent -> neighbors[i]);
+    //         }
+    //     }
+    // } else {
+    //     rooms.push_back(new_room);
+    // }
+    // printf("bye\n");
     rooms.push_back(new_room);
     return true;
 }
 
 int Map::drawToWindow(sf::RenderWindow *window) const{
-    for(int i = 0; i < rooms.size(); i++){
-        window -> draw(*(rooms[i] -> getShape()));
-    }
     // TODO: Make these pretty rectangles with width.
     for(int i = 0; i < rooms.size(); i++){
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
@@ -56,6 +69,10 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
                 window->draw(liney, 2, sf::Lines);
             }
         }
-    };
+    }
+    for(int i = 0; i < rooms.size(); i++){
+        window -> draw(*(rooms[i] -> getShape()));
+    }
+
     return 1;
 }
