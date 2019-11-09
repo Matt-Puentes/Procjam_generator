@@ -30,19 +30,10 @@ bool Map::addRoom(Room* new_room){
     int y_roomwidth_pos = ypos / normalRoomWidth;
 
     bool collision = false;
-    for(int i = 0; i < rooms.size(); i++){
-        if(usedPositions[i].x == x_roomwidth_pos && usedPositions[i].y == y_roomwidth_pos){
-            collision = true;
-            printf("Collision found: old room pos: (%f, %f) new room pos (%d, %d)\n", usedPositions[i].x, usedPositions[i].y, x_roomwidth_pos,  y_roomwidth_pos);
-        }
-    }
-    // If there is no collision
-    if(!collision){
-        usedPositions.push_back(sf::Vector2f(x_roomwidth_pos, y_roomwidth_pos));
-        rooms.push_back(new_room);
-        return true;
-    }
-    return false;
+
+    usedPositions.push_back(sf::Vector2f(x_roomwidth_pos, y_roomwidth_pos));
+    rooms.push_back(new_room);
+    return true;
 }
 
 int Map::drawToWindow(sf::RenderWindow *window) const{
@@ -51,17 +42,19 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
     }
     // TODO: Make these pretty rectangles with width.
     for(int i = 0; i < rooms.size(); i++){
-        for(int j = 0; j < rooms[i] -> getNeighborCount(); j++){
-            sf::Vertex  linex[] = {
-                sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i]->getPos().y)),
-                sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y))
-            };
-            sf::Vertex  liney[] = {
-                sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y)),
-                sf::Vertex(sf::Vector2f(rooms[i] -> getNeighbors()[j] -> getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y))
-            };
-            window->draw(linex, 2, sf::Lines);
-            window->draw(liney, 2, sf::Lines);
+        for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
+            if(rooms[i] -> getNeighbors()[j] != NULL){
+                sf::Vertex  linex[] = {
+                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i]->getPos().y)),
+                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y))
+                };
+                sf::Vertex  liney[] = {
+                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y)),
+                    sf::Vertex(sf::Vector2f(rooms[i] -> getNeighbors()[j] -> getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y))
+                };
+                window->draw(linex, 2, sf::Lines);
+                window->draw(liney, 2, sf::Lines);
+            }
         }
     };
     return 1;
