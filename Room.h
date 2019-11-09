@@ -6,6 +6,8 @@
 #include <ctime>    // For time()
 #include <cstdlib>  // For srand() and rand()
 
+#include "Ellipse.h"
+
 class Room { 
     private:
         std::vector<Room*> neighbors;
@@ -14,11 +16,9 @@ class Room {
 
 		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size, bool rect = true);
 		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size, bool rect = true);
-		void makeRoomCircle(sf::Vector2f init_pos);
-		void makeRoomTriangle(sf::Vector2f init_pos);
-		void makeRoomLong(sf::Vector2f init_pos);
-		void makeRoomWide(sf::Vector2f init_pos);
-		void makeRoomGrand(sf::Vector2f init_pos);
+		void makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size);
+		void makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size);
+		void makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min);
 
     public:
         enum RoomType {
