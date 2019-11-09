@@ -24,7 +24,8 @@ class Room {
             ROOM_CIRCLE,
             ROOM_TRIANGLE,
             ROOM_LONG,
-            ROOM_WIDE
+            ROOM_WIDE,
+            ROOM_UNDEFINED
         };
         Room(sf::Shape *room_shape, sf::Vector2f init_pos = sf::Vector2f(0, 0));
         Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0));

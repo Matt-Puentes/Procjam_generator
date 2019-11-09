@@ -7,6 +7,7 @@
 class Map { 
     private:
         std::vector<Room*> rooms;
+        std::map<std::vector<int>, bool> positionLookupTable;
     public:
         Map();
         Map(std::vector<Room*> rooms);

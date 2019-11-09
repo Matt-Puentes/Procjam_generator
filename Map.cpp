@@ -1,11 +1,22 @@
 #include "Map.h"
 
+int normalRoomWidth = 100;
+
 Map::Map(){
     rooms.clear();
+    positionLookupTable = std::map<std::vector<int>, bool>();
 }
 
 Map::Map(std::vector<Room*> init_rooms){
     rooms = init_rooms;
+    positionLookupTable = std::map<std::vector<int>, bool>();
+    for(int i = 0; i < rooms.size(); i++){
+        int xpos = rooms[i] -> getPos().x;
+        int ypos = rooms[i] -> getPos().y;
+        int x_roomwidth_pos = xpos / normalRoomWidth;
+        int y_roomwidth_pos = ypos / normalRoomWidth;
+        positionLookupTable.insert(std::vector(x_roomwidth_pos, y_roomwidth_pos), true);
+    }
 }
 
 std::vector<Room*> Map::getRooms() const{
