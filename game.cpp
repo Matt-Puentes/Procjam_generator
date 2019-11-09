@@ -16,9 +16,9 @@ int main()
 
 
     MapMaker mapmaker = MapMaker();
+    Map *map = mapmaker.getMap(window_width, window_height);
     // Start the game loop
     while (window.isOpen()){
-        Map *map = mapmaker.getMap(window_width, window_height);
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
@@ -37,7 +37,7 @@ int main()
         // Update the window
         window.display();
 
-        sf::sleep(sf::seconds(1));
+        // sf::sleep(sf::seconds(1));
     }
     return EXIT_SUCCESS;
 }

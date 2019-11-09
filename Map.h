@@ -7,11 +7,12 @@
 class Map { 
     private:
         std::vector<Room*> rooms;
-        std::map<std::vector<int>, bool> positionLookupTable;
+        std::vector<sf::Vector2f> usedPositions;
     public:
         Map();
         Map(std::vector<Room*> rooms);
         std::vector<Room*> getRooms() const;
+        bool addRoom(Room* new_room);
         int drawToWindow(sf::RenderWindow *window) const;
 };
 

@@ -6,6 +6,11 @@
 class Room { 
     private:
         std::vector<Room*> neighbors;
+        // Room* room_up;
+        // Room* room_down;
+        // Room* room_left;
+        // Room* room_right;
+        
         sf::Vector2f position;
         sf::Shape *shape;
 
@@ -27,12 +32,22 @@ class Room {
             ROOM_WIDE,
             ROOM_UNDEFINED
         };
+        enum RoomDirection {
+            UP_FROM_PARENT,
+            DOWN_FROM_PARENT,
+            LEFT_FROM_PARENT,
+            RIGHT_FROM_PARENT,
+            ROOT
+        };
         Room(sf::Shape *room_shape, sf::Vector2f init_pos = sf::Vector2f(0, 0));
         Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0));
+        Room(Room::RoomType room_type, Room* parent, RoomDirection dir_from_parent);
         ~Room();
         sf::Shape *getShape() const;
         std::vector<Room*> getNeighbors() const;
+        int getNeighborCount() const;
         sf::Vector2f getPos() const;
-        void addNeighbor(Room* room);
+        void setPos(sf::Vector2f new_pos);
+        bool addNeighbor(Room* room, RoomDirection dir);
         int neighbor_num;
 };

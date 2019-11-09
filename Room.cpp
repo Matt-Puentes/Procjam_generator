@@ -6,11 +6,14 @@ Room::Room(sf::Shape *room_shape, sf::Vector2f init_pos){
     position = init_pos;
     shape -> setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape -> getLocalBounds().height / 2)));
     neighbor_num = rand() % 2;
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
 }
 
 Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     if(room_type == ROOM_UNDEFINED){
-        printf("New room type\n");
         room_type = static_cast<Room::RoomType>(rand() % ROOM_UNDEFINED);
     }
     switch(room_type){
@@ -25,9 +28,15 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     }
 
     position = init_pos;
-    printf("Neighbor Number %d\n", neighbor_num);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
+    neighbors.push_back(NULL);
 }
 
+Room::Room(Room::RoomType room_type, Room* parent, RoomDirection dir_from_parent){
+
+}
 
 Room::~Room(){
     delete shape;
@@ -41,12 +50,38 @@ std::vector<Room*> Room::getNeighbors() const{
     return neighbors;
 }
 
-void Room::addNeighbor(Room* room){
-    neighbors.push_back(room);
+bool Room::addNeighbor(Room* room, RoomDirection dir){
+    if(dir == Room::ROOT)
+        return false;
+    if(neighbors[dir] == NULL){
+        neighbors[dir] = room;
+        return true;
+    }
+    return false;
+    return true;
+    // neighbors.push_back(room);
 }
 
 sf::Vector2f Room::getPos() const{
     return position;
+}
+
+void Room::setPos(sf::Vector2f new_pos){
+    position.x = new_pos.x;
+    position.y = new_pos.y;
+}
+
+int Room::getNeighborCount() const{
+    int count = 0;
+    if(neighbors[Room::UP_FROM_PARENT] != NULL)
+        count++;
+    if(neighbors[Room::DOWN_FROM_PARENT] != NULL)
+        count++;
+    if(neighbors[Room::RIGHT_FROM_PARENT] != NULL)
+        count++;
+    if(neighbors[Room::LEFT_FROM_PARENT] != NULL)
+        count++;
+    return count;
 }
 
 void Room::makeRoomBig(sf::Vector2f init_pos) {
