@@ -38,6 +38,5 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
         }
         roomsToGenerate.pop();
     }
-    printf("Newmap rooms length: %lu\n", newmap -> getRooms().size());
     return newmap;
 }

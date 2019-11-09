@@ -4,6 +4,7 @@
 
 int main()
 {
+	srand(time(0));
     int window_width = 1920;
     int window_height = 1080;
     // Create the main window
@@ -14,7 +15,16 @@ int main()
     if (!font.loadFromFile("fonts/df-font.ttf"))
         return EXIT_FAILURE;
 
+// 	std::vector<Room*> test_procgen_room;
+//  	test_procgen_room.push_back(new Room(Room::ROOM_LONG, sf::Vector2f(400, 500)));
+//  	test_procgen_room.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(400, 200)));
+//  	test_procgen_room.push_back(new Room(Room::ROOM_SMALL, sf::Vector2f(200, 200)));
+//  	test_procgen_room.push_back(new Room(Room::ROOM_BIG, sf::Vector2f(600, 200)));
+
+//  	Map *map = new Map(test_procgen_room);
+
     MapMaker mapmaker = MapMaker();
+//     Map *map = mapmaker.getMap(window_width, window_height);
     // Start the game loop
     while (window.isOpen()){
         Map *map = mapmaker.getMap(window_width, window_height);

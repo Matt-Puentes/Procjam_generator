@@ -14,7 +14,7 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     switch(room_type){
             case ROOM_BIG : 
 				makeRoomBig(init_pos, 50, 150);
-            break;
+			break;
             case ROOM_SMALL : 
                 makeRoomSmall(init_pos, 20, 50);
             break;
@@ -36,6 +36,9 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
     }
 
   	position = init_pos;
+  	shape->setFillColor(getRandomColor());
+ 
+    neighbor_num = rand() % 2;
 }
 
 Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* parent){
@@ -253,4 +256,13 @@ void Room::makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int
 	shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
 
     neighbor_num = rand() % 2;
+}
+
+sf::Color Room::getRandomColor() {
+
+	int r = rand() % 255;
+	int g = rand() % 255;
+	int b = rand() % 255;
+
+	return sf::Color(r, g, b);
 }

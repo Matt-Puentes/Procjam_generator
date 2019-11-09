@@ -48,4 +48,5 @@ class Room {
         bool addNeighbor(Room* room, RoomDirection dir);
         std::vector<Room::RoomDirection> getFreeDirections();
         int neighbor_num;
+		sf::Color getRandomColor();
 };
