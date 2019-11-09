@@ -1,20 +1,14 @@
 #include <vector>
 #define _USE_MATH_DEFINES
 #include <math.h>
-
 #include <SFML/Graphics.hpp>
 #include <ctime>    // For time()
 #include <cstdlib>  // For srand() and rand()
-
 #include "Ellipse.h"
 
 class Room { 
     private:
         std::vector<Room*> neighbors;
-        // Room* room_up;
-        // Room* room_down;
-        // Room* room_left;
-        // Room* room_right;
         
         sf::Vector2f position;
         sf::Shape *shape;
@@ -43,7 +37,7 @@ class Room {
             ROOT
         };
         Room(sf::Shape *room_shape, sf::Vector2f init_pos = sf::Vector2f(0, 0));
-        Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0), bool rect = true);
+        // Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0), bool rect = true);
         Room(Room::RoomType room_type, sf::Vector2f init_pos = sf::Vector2f(0, 0));
         Room(Room::RoomType room_type, Room* parent, RoomDirection dir_from_parent);
         ~Room();

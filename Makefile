@@ -5,6 +5,7 @@ SRC= game.cpp \
 Map.cpp \
 Room.cpp \
 MapMaker.cpp \
+Ellipse.cpp \
 
 EXECUTABLE= game
 

@@ -7,7 +7,6 @@ int main()
     int window_width = 800;
     int window_height = 600;
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(1200, 800), "SFML window");
     sf::RenderWindow window(sf::VideoMode(window_width, window_height), "SFML window");
 
     // Create a graphical text to display

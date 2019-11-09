@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
+#include <cmath>
 
 class EllipseShape : public sf::Shape
 {

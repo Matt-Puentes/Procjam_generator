@@ -7,13 +7,17 @@ Room::Room(sf::Shape *room_shape, sf::Vector2f init_pos){
     shape -> setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape -> getLocalBounds().height / 2)));
 }
 
-Room::Room(Room::RoomType room_type, sf::Vector2f init_pos, bool rect){
+Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
+    if(room_type == ROOM_UNDEFINED){
+        room_type = static_cast<Room::RoomType>(rand() % ROOM_UNDEFINED);
+    }
+
     switch(room_type){
             case ROOM_BIG : 
-				makeRoomBig(init_pos, 50, 150, rect);
+				makeRoomBig(init_pos, 50, 150);
             break;
             case ROOM_SMALL : 
-                makeRoomSmall(init_pos, 20, 50, rect);
+                makeRoomSmall(init_pos, 20, 50);
             break;
             case ROOM_CIRCLE : 
 				makeRoomCircle(init_pos, 10, 200);
@@ -34,28 +38,6 @@ Room::Room(Room::RoomType room_type, sf::Vector2f init_pos, bool rect){
 
   	position = init_pos;
     neighbor_num = rand() % 2;
-    neighbors.push_back(NULL);
-    neighbors.push_back(NULL);
-    neighbors.push_back(NULL);
-    neighbors.push_back(NULL);
-}
-
-Room::Room(Room::RoomType room_type, sf::Vector2f init_pos){
-    if(room_type == ROOM_UNDEFINED){
-        room_type = static_cast<Room::RoomType>(rand() % ROOM_UNDEFINED);
-    }
-    switch(room_type){
-        case ROOM_BIG : makeRoomBig(init_pos); break;
-        case ROOM_SMALL : makeRoomSmall(init_pos); break;
-        case ROOM_CIRCLE : makeRoomCircle(init_pos); break;
-        case ROOM_TRIANGLE : makeRoomTriangle(init_pos); break;
-        case ROOM_LONG : makeRoomLong(init_pos); break;
-        case ROOM_WIDE : makeRoomWide(init_pos); break;
-        case ROOM_UNDEFINED : // Go to next case
-        default : printf("Error: undefined room type.\n"); break;
-    }
-
-    position = init_pos;
     neighbors.push_back(NULL);
     neighbors.push_back(NULL);
     neighbors.push_back(NULL);
@@ -179,48 +161,23 @@ int Room::getNeighborCount() const{
     return count;
 }
 
-void Room::makeRoomBig(sf::Vector2f init_pos) {
-	shape = new sf::RectangleShape(sf::Vector2f(100, 150));
-	shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
-    neighbor_num = 2;
-}
-
-void Room::makeRoomSmall(sf::Vector2f init_pos) {
-	shape = new sf::RectangleShape(sf::Vector2f(50, 50));
-	shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
-    neighbor_num = rand() % 2;
-}
-
-void Room::makeRoomCircle(sf::Vector2f init_pos) {
-	shape = new sf::CircleShape(50);
-	shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
-    neighbor_num = rand() % 2;
-}
-
 void Room::makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size) {
 	srand(time(0));
 	
-	sf::ConvexShape* big_room = new sf::ConvexShape();
+	sf::ConvexShape* triangle_room = new sf::ConvexShape();
 
 	int points = 3;
-	big_room->setPointCount(points);
+	triangle_room->setPointCount(points);
 
 	for (int i = 0; i < points; i++) {
 		int radius = (rand() % (max_size - min_size)) + min_size;
 		int x = cos(((i * (360 / points)) * M_PI) / 180) * radius;
 		int y = sin(((i * (360 / points)) * M_PI) / 180) * radius;
-		big_room->setPoint(i, sf::Vector2f(init_pos.x + x, init_pos.y - y));
+		triangle_room->setPoint(i, sf::Vector2f(init_pos.x + x, init_pos.y - y));
 	}
 
-	shape = big_room;
+	shape = triangle_room;
 
-	shape = convex;
-    neighbor_num = rand() % 2;
-}
-
-void Room::makeRoomLong(sf::Vector2f init_pos) {
-	shape = new sf::RectangleShape(sf::Vector2f(50, 200));
-	shape->setPosition(sf::Vector2f(init_pos.x - (shape->getLocalBounds().width / 2), init_pos.y - (shape->getLocalBounds().height / 2)));
     neighbor_num = rand() % 2;
 }
 
