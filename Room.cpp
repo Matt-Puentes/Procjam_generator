@@ -1,11 +1,13 @@
 #include "Room.h"
 #include <stdio.h>
 
-Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* new_parent){
+Room::Room(Room::RoomType new_room_type, RoomDirection dir_from_parent, Room* new_parent){
     static int roomCount = 0;
     roomID = roomCount + 0;
+    room_type = new_room_type;
     roomCount++;
-
+    explored = false;
+    
     dir = dir_from_parent;
     parent = new_parent;
 
@@ -79,9 +81,25 @@ sf::Shape *Room::getShape() const{
     return shape;
 }
 
-std::vector<Room*> Room::getNeighbors() const{
+std::vector<Room*> Room::getAllNeighbors() const{
     return neighbors;
 }
+
+std::vector<Room*> Room::getNeighbors() const{
+    std::vector<Room*> filtered_neighbors;
+
+    if(neighbors[Room::UP_FROM_PARENT] != NULL)
+        filtered_neighbors.push_back(neighbors[Room::UP_FROM_PARENT]);
+    if(neighbors[Room::DOWN_FROM_PARENT] != NULL)
+        filtered_neighbors.push_back(neighbors[Room::DOWN_FROM_PARENT]);
+    if(neighbors[Room::RIGHT_FROM_PARENT] != NULL)
+        filtered_neighbors.push_back(neighbors[Room::RIGHT_FROM_PARENT]);
+    if(neighbors[Room::LEFT_FROM_PARENT] != NULL)
+        filtered_neighbors.push_back(neighbors[Room::LEFT_FROM_PARENT]);
+
+    return filtered_neighbors;
+}
+
 
 bool Room::addNeighbor(Room* room, RoomDirection dir){
     if(dir == Room::ROOT)

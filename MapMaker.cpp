@@ -19,7 +19,6 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
     Map *map = new Map();
     map -> addRoom(r);
 
-    fputs("------NEWMAP------\n", stdout);
     while(!roomsToGenerate.empty()){
         Room* current_room = roomsToGenerate.front();
         while(current_room -> getNeighborCount() < current_room -> neighbor_num){

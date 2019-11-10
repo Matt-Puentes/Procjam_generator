@@ -6,6 +6,7 @@ Map.cpp \
 Room.cpp \
 MapMaker.cpp \
 Ellipse.cpp \
+MapExplorer.cpp \
 
 EXECUTABLE= game
 
