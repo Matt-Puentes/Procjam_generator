@@ -13,7 +13,7 @@ class Map {
         Map(std::vector<Room*> rooms);
         std::vector<Room*> getRooms() const;
         bool addRoom(Room* new_room);
-        float drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y) const;
+        float drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y, int selected_room_id = -1) const;
         std::vector<int> getBounds() const;
 };
 

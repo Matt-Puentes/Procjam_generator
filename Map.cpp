@@ -112,7 +112,7 @@ std::vector<int> Map::getBounds() const{
     return return_vector;
 }
 
-float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y) const{
+float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y, int selected_room_id) const{
     for(int i = 0; i < rooms.size(); i++){
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
             if(rooms[i] -> getNeighbors()[j] != NULL){
@@ -129,7 +129,23 @@ float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y
     }
     for(int i = 0; i < rooms.size(); i++){
         rooms[i] -> setPos(sf::Vector2f(rooms[i] -> getPos().x - smallest_x, rooms[i] -> getPos().y - smallest_y));
-        window -> draw(*(rooms[i] -> getShape()));
+        sf::Shape *shape = (rooms[i] -> getShape());
+        sf::Vector2f oldPos = shape -> getPosition();
+        sf::Color oldColor = shape -> getFillColor();
+        sf::Vector2f oldScale = shape -> getScale();
+
+        // Draw Shadow
+        shape -> setPosition(shape -> getPosition().x + 5, shape -> getPosition().y + 10);
+        shape -> setFillColor(sf::Color(0, 0, 0, 100));
+        window -> draw(*shape);
+
+        // Reset
+        shape -> setPosition(oldPos);
+        shape -> setFillColor(oldColor);
+
+        if(rooms[i] -> roomID == selected_room_id)
+            shape -> setFillColor(sf::Color::Yellow);
+        window -> draw(*shape);
     }
 
     return 1;

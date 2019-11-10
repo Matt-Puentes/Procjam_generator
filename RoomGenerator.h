@@ -36,4 +36,4 @@ class RoomGenerator {
         sf::ConvexShape *makeConvexShape(int max_points, int min_points, int min_size, int max_size);
         sf::ConvexShape *makeEllipseShape(int max_points, int min_points, int min_size, int max_size);
         sf::ConvexShape *makeRectShape(int max_points, int min_points, int min_size, int max_size);
-}
+};

@@ -1,14 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
 #include "MapMaker.h"
-
+#include <chrono>
+#include <ctime>
 int main()
 {
+    int number_of_screenshots = 0;
 	srand(time(0));
     int window_width = 1920;
     int window_height = 1080;
+
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode(window_width, window_height), "SFML window");
+    sf::RenderWindow window(sf::VideoMode(window_width, window_height), "SFML window", sf::Style::Default, settings);
 
     // Create a graphical text to display
     sf::Font font;
@@ -19,7 +24,10 @@ int main()
     sf::RenderTexture buffer;
     buffer.create(window_width, window_height);
 
-    bool render = true;
+    bool regenerate = true;
+
+    Map *map = mapmaker.getMap(window_width, window_height);
+    sf::Shape *background_shape = Room::makeConvexShape(4, 3, 100, 150);
 
     // Start the game loop
     while (window.isOpen()){
@@ -33,45 +41,83 @@ int main()
             if (event.type == sf::Event::KeyPressed){
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
                     printf("R pressed\n");
-                    render = true;
+                    regenerate = true;
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+                    std::string filename = "./screenshot_";
+                    std::time_t result = std::time(nullptr);
+                    filename += std::to_string(result);
+                    filename += ".png";
+
+                    printf("Saving image to %s\n", filename.c_str());
+                    sf::Texture screenshot = sf::Texture();
+                    screenshot.create(window_width, window_height);
+                    screenshot.update(window);
+                    sf::Image screenshot_image = screenshot.copyToImage();
+                    if (!screenshot_image.saveToFile(filename))
+                        printf("Error saving!\n");
                 }
             }
         }
+        if(regenerate){
+            // Make a new map
+            delete map;
+            map = mapmaker.getMap(window_width, window_height);
 
-        if(render){
-            // Generate the map
-            Map *map = mapmaker.getMap(window_width, window_height);
-            std::vector<int> map_bounds = map -> getBounds();
-
-            // Calculate the size of the buffer
-            int buffer_x = map_bounds[1] - map_bounds[0];
-            int buffer_y = map_bounds[3] - map_bounds[2];
-
-            //Create the buffer
-            buffer.create(buffer_x, buffer_y);
-            buffer.clear(sf::Color::Black);
-
-            // Draw the map to the buffer
-            map -> drawToWindow(&buffer, map_bounds[0], map_bounds[2]);
-            buffer.display();
-            
-            // Turn the buffer into a sprite
-            const sf::Texture& texture = buffer.getTexture();
-            sf::Sprite sprite(texture);
-
-            // Scale the sprite to fit the window size 
-            float scale_x = (float) window_width / (float) sprite.getLocalBounds().width;
-            float scale_y = (float) window_height / (float) sprite.getLocalBounds().height;
-            float scale = scale_x < scale_y ? scale_x : scale_y;
-            sprite.setScale(scale, scale);
-            sprite.setPosition((window_width/2) - sprite.getLocalBounds().width*scale/2, (window_height/2)  - sprite.getLocalBounds().height*scale/2);\
-
-            // Draw buffer to the window
-            window.clear(sf::Color::Blue);
-            window.draw(sprite);
-            window.display();
+            // Make a new shape
+            delete background_shape;
+            background_shape = Room::makeConvexShape(4, 3, 100, 150);
+            regenerate = false;
         }
-        render = false;
+
+        std::vector<int> map_bounds = map -> getBounds();
+
+        // Calculate the size of the buffer
+        int buffer_x = map_bounds[1] - map_bounds[0];
+        int buffer_y = map_bounds[3] - map_bounds[2];
+
+        //Create the buffer
+        buffer.create(buffer_x, buffer_y);
+        // buffer.clear(sf::Color(111,111,111));
+        buffer.clear(sf::Color::Transparent);
+
+        // Draw the map to the buffer
+        map -> drawToWindow(&buffer, map_bounds[0], map_bounds[2], 0);
+        buffer.display();
+        
+        // Turn the buffer into a sprite
+        const sf::Texture& texture = buffer.getTexture();
+        sf::Sprite sprite(texture);
+
+        // Scale the sprite to fit the window size 
+        float scale_x = (float) window_width / (float) sprite.getLocalBounds().width;
+        float scale_y = (float) window_height / (float) sprite.getLocalBounds().height;
+        float scale = scale_x < scale_y ? scale_x : scale_y;
+        sprite.setScale(scale, scale);
+        sprite.setPosition((window_width/2) - sprite.getLocalBounds().width*scale/2, (window_height/2)  - sprite.getLocalBounds().height*scale/2);\
+
+        // Clear window
+        window.clear(sf::Color(111,111,111));
+
+        // Draw Tiled backgroundx
+        int num_x = window_width / background_shape -> getLocalBounds().width;
+        int num_y = window_height / background_shape -> getLocalBounds().height;
+        int offset_x = (window_width % (int) background_shape -> getLocalBounds().width) / 2;
+        int offset_y = (window_height % (int) background_shape -> getLocalBounds().height) / 2;
+        for(int i = 0; i < num_x; i++){
+            for(int j = 0; j < num_y; j++){
+                background_shape -> setPosition(i * background_shape -> getLocalBounds().width + offset_x, j * background_shape -> getLocalBounds().height + offset_y);
+                background_shape -> setFillColor(sf::Color(120, 120, 120));
+                window.draw(*background_shape);
+            }
+        }
+
+        // Draw buffer to the window
+        window.draw(sprite);
+
+        // Finalize and display the window        
+        window.display();
+        
     }
     return EXIT_SUCCESS;
 }

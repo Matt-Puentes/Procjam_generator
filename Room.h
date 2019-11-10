@@ -14,6 +14,7 @@ class Room {
             ROOM_SMALL,
             ROOM_CIRCLE,
             ROOM_TRIANGLE,
+            ROOM_RECTANGLE,
             ROOM_LONG,
             ROOM_WIDE,
             ROOM_UNDEFINED
@@ -42,6 +43,7 @@ class Room {
         bool addNeighbor(Room* room, RoomDirection dir);
         std::vector<Room::RoomDirection> getFreeDirections();
 		sf::Color getRandomColor();
+        static sf::ConvexShape *makeConvexShape(int max_points, int min_points, int min_size, int max_size);
 
     private:
         sf::Vector2f position;
@@ -51,6 +53,5 @@ class Room {
 		void makeRoomSmall(int min_size, int max_size);
 		void makeRoomCircle(int min_size, int max_size);
 		void makeRoomTriangle(int min_size, int max_size);
-		void makeRoomLong(int width_max, int width_min, int height_max, int height_min);
-        sf::ConvexShape *makeConvexShape(int max_points, int min_points, int min_size, int max_size);
+		void makeRoomRectangle(int width_max, int width_min, int height_max, int height_min);
 };
