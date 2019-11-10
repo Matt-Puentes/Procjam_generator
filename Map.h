@@ -7,9 +7,9 @@
 class Map { 
     private:
         std::vector<Room*> rooms;
-        std::vector<sf::Vector2f> usedPositions;
     public:
         Map();
+        ~Map();
         Map(std::vector<Room*> rooms);
         std::vector<Room*> getRooms() const;
         bool addRoom(Room* new_room);

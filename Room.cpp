@@ -23,13 +23,13 @@ Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* new_pa
     else if(room_type == ROOM_SMALL)
         makeRoomSmall(20, 50);
     else if(room_type == ROOM_CIRCLE)
-        makeRoomCircle(10, 200);
+        makeRoomCircle(30, 200);
     else if(room_type == ROOM_TRIANGLE)
-        makeRoomTriangle(50, 150);
+        makeRoomTriangle(100, 150);
     else if(room_type == ROOM_LONG)
-        makeRoomLong(20, 10, 200, 100);
+        makeRoomLong(30, 20, 200, 100);
     else if(room_type == ROOM_WIDE)
-        makeRoomLong(200, 100, 20, 10);
+        makeRoomLong(200, 100, 30, 20);
 
     int distance_x = -1;
     int distance_y = -1;
@@ -157,7 +157,6 @@ sf::ConvexShape *Room::makeConvexShape(int max_points, int min_points, int min_s
         int y = sin(((i * (360 / points)) * M_PI) / 180) * radius;
         convex_shape -> setPoint(i, sf::Vector2f(x + radius, y + radius));
     }
-
     return convex_shape;
 }
 

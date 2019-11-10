@@ -1,6 +1,14 @@
 #include "MapMaker.h"
 #include <queue>
-MapMaker::MapMaker(){}
+MapMaker::MapMaker(){
+    map = NULL;
+}
+
+MapMaker::~MapMaker(){
+    if(map != NULL){
+        delete map;
+    }
+}
 
 Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
     std::queue<Room *> roomsToGenerate;
@@ -8,8 +16,8 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
     Room *r = new Room(Room::ROOM_BIG, Room::ROOT);
     roomsToGenerate.push(r);
 
-    Map *newmap = new Map();
-    newmap -> addRoom(r);
+    Map *map = new Map();
+    map -> addRoom(r);
 
     fputs("------NEWMAP------\n", stdout);
     while(!roomsToGenerate.empty()){
@@ -25,7 +33,7 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
             Room::RoomDirection dir = freeDirs[random];
             Room * new_room = new Room(Room::ROOM_UNDEFINED, dir, current_room);
 
-            bool success = newmap -> addRoom(new_room);
+            bool success = map -> addRoom(new_room);
             if(success){
                 current_room -> addNeighbor(new_room, dir);
                 roomsToGenerate.push(new_room);         
@@ -33,5 +41,5 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
         }
         roomsToGenerate.pop();
     }
-    return newmap;
+    return map;
 }

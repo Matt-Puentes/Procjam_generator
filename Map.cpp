@@ -37,18 +37,21 @@ private:
 
 Map::Map(){
     rooms.clear();
-    usedPositions = std::vector<sf::Vector2f>();
+}
+
+Map::~Map(){
+    for(int i = 0; i < rooms.size(); i++){
+        delete rooms[i];
+    }
 }
 
 Map::Map(std::vector<Room*> init_rooms){
     rooms = init_rooms;
-    usedPositions = std::vector<sf::Vector2f>();
     for(int i = 0; i < rooms.size(); i++){
         int xpos = rooms[i] -> getPos().x;
         int ypos = rooms[i] -> getPos().y;
         int x_roomwidth_pos = xpos / normalRoomWidth;
         int y_roomwidth_pos = ypos / normalRoomWidth;
-        usedPositions.push_back(sf::Vector2f(x_roomwidth_pos, y_roomwidth_pos));
     }
 }
 
