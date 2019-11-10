@@ -8,6 +8,7 @@
 
 class Room { 
     public:
+        int roomID;
         enum RoomType {
             ROOM_BIG,
             ROOM_SMALL,

@@ -25,9 +25,11 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
             Room::RoomDirection dir = freeDirs[random];
             Room * new_room = new Room(Room::ROOM_UNDEFINED, dir, current_room);
 
-            current_room -> addNeighbor(new_room, dir);
-            newmap -> addRoom(new_room);
-            roomsToGenerate.push(new_room);         
+            bool success = newmap -> addRoom(new_room);
+            if(success){
+                current_room -> addNeighbor(new_room, dir);
+                roomsToGenerate.push(new_room);         
+            }
         }
         roomsToGenerate.pop();
     }

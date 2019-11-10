@@ -1,9 +1,13 @@
 #include "Room.h"
 #include <stdio.h>
 
-Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* parent){
+Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* new_parent){
+    static int roomCount = 0;
+    roomID = roomCount + 0;
+    roomCount++;
+
     dir = dir_from_parent;
-    parent = parent;
+    parent = new_parent;
 
     // Initialize neighbors array
     neighbors.push_back(NULL);
@@ -60,7 +64,7 @@ Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* parent
         break;
     }
 
-    position = init_pos;    
+    position = init_pos;
     shape -> setPosition(init_pos.x - (shape -> getLocalBounds().width / 2), init_pos.y - (shape -> getLocalBounds().height / 2));
   	shape->setFillColor(getRandomColor());
 }

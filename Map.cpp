@@ -6,7 +6,7 @@ class sfLine : public sf::Drawable
 {
 public:
     sfLine(const sf::Vector2f& point1, const sf::Vector2f& point2):
-        color(sf::Color::Yellow), thickness(5.f)
+        color(sf::Color::White), thickness(5.f)
     {
         sf::Vector2f direction = point2 - point1;
         sf::Vector2f unitDirection = direction/std::sqrt(direction.x*direction.x+direction.y*direction.y);
@@ -57,31 +57,25 @@ std::vector<Room*> Map::getRooms() const{
 }
 
 bool Map::addRoom(Room* new_room){
-    // sf::FloatRect new_globalBounds = new_room -> getShape() -> getGlobalBounds();
-    // Room* collision = 0;
-    // for(int i = 0; i < rooms.size(); i++){
-    //     sf::FloatRect globalBounds = rooms[i] -> getShape() -> getGlobalBounds();
-    //     if(globalBounds.intersects(new_globalBounds)){
-    //         collision = rooms[i];
-    //         break;
-    //     }
-    // }
+    sf::FloatRect new_globalBounds = new_room -> getShape() -> getGlobalBounds();
+    Room* collision = 0;
+    for(int i = 0; i < rooms.size(); i++){
+        sf::FloatRect globalBounds = rooms[i] -> getShape() -> getGlobalBounds();
+        if(globalBounds.intersects(new_globalBounds)){
+            collision = rooms[i];
+            printf("Room ID %d has collision with Room ID %d\n", new_room -> roomID, rooms[i] -> roomID);
+            break;
+        }
+    }
     
-    // if(collision){
-    //     printf("Collision!\n");
-    //     if(new_room -> parent != NULL){
-    //         printf("Collision!!\n");
-    //         for(int i = 0; i < new_room -> parent -> neighbors.size(); i++){
-    //             printf("ok....\n");
-    //             printf("ok.... %lu\n", new_room -> parent -> neighbors.size());
-    //             printf("ok.... %d\n", new_room -> parent -> neighbors[i]);
-    //         }
-    //     }
-    // } else {
-    //     rooms.push_back(new_room);
-    // }
-    // printf("bye\n");
-    rooms.push_back(new_room);
+    if(collision){
+        if(new_room -> parent != NULL){
+            new_room -> parent -> neighbors[new_room -> dir] = collision;
+            return false;
+        }
+    } else {
+        rooms.push_back(new_room);
+    }
     return true;
 }
 
@@ -116,20 +110,9 @@ std::vector<int> Map::getBounds() const{
 }
 
 float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y) const{
-    // TODO: Make these pretty rectangles with width.
-    printf("Gonna draw the map!\n");
     for(int i = 0; i < rooms.size(); i++){
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
-            
             if(rooms[i] -> getNeighbors()[j] != NULL){
-                // sf::Vertex  linex[] = {
-                //     sf::Vertex(sf::Vector2f(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y)),
-                //     sf::Vertex(sf::Vector2f(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y))
-                // };
-                // sf::Vertex  liney[] = {
-                //     sf::Vertex(sf::Vector2f(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y)),
-                //     sf::Vertex(sf::Vector2f(rooms[i] -> getNeighbors()[j] -> getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y))
-                // };
                 sf::Vector2f l1v1(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y);
                 sf::Vector2f l1v2(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
                 sf::Vector2f l2v1(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
@@ -138,8 +121,6 @@ float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y
                 sfLine line2 = sfLine(l2v1, l2v2);
                 window->draw(line1);
                 window->draw(line2);
-                // window->draw(linex, 2, sf::Lines);
-                // window->draw(liney, 2, sf::Lines);
             }
         }
     }
