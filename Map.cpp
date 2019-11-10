@@ -52,18 +52,49 @@ bool Map::addRoom(Room* new_room){
     return true;
 }
 
-int Map::drawToWindow(sf::RenderWindow *window) const{
+std::vector<int> Map::getBounds() const{
+    std::vector<int> return_vector;
+    int largest_x = 0;
+    int smallest_x = 1000;
+    int largest_y = 0;
+    int smallest_y = 1000;
+
+    for(int i = 0; i < rooms.size(); i++){
+        int high_x = rooms[i] -> getShape() -> getGlobalBounds().left + rooms[i] -> getShape() -> getGlobalBounds().width;
+        int high_y = rooms[i] -> getShape() -> getGlobalBounds().top + rooms[i] -> getShape() -> getGlobalBounds().height;
+        int low_x = rooms[i] -> getShape() -> getGlobalBounds().left;
+        int low_y = rooms[i] -> getShape() -> getGlobalBounds().top;
+
+        if(largest_y < high_y)
+            largest_y = high_y;
+        if(largest_x < high_x)
+            largest_x = high_x;
+        if(smallest_y > low_y)
+            smallest_y = low_y;
+        if(smallest_x > low_x)
+            smallest_x = low_x;
+    }
+    return_vector.push_back(smallest_x - 100);
+    return_vector.push_back(largest_x + 100);
+    return_vector.push_back(smallest_y - 100);
+    return_vector.push_back(largest_y + 100);
+    // printf("%d, %d, %d, %d", smallest_x, largest_x, smallest_y, largest_y)
+    return return_vector;
+}
+
+float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y) const{
     // TODO: Make these pretty rectangles with width.
+    printf("Gonna draw the map!\n");
     for(int i = 0; i < rooms.size(); i++){
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
             if(rooms[i] -> getNeighbors()[j] != NULL){
                 sf::Vertex  linex[] = {
-                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i]->getPos().y)),
-                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y))
+                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y)),
+                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y))
                 };
                 sf::Vertex  liney[] = {
-                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y)),
-                    sf::Vertex(sf::Vector2f(rooms[i] -> getNeighbors()[j] -> getPos().x, rooms[i] -> getNeighbors()[j] -> getPos().y))
+                    sf::Vertex(sf::Vector2f(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y)),
+                    sf::Vertex(sf::Vector2f(rooms[i] -> getNeighbors()[j] -> getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y))
                 };
                 window->draw(linex, 2, sf::Lines);
                 window->draw(liney, 2, sf::Lines);
@@ -71,6 +102,7 @@ int Map::drawToWindow(sf::RenderWindow *window) const{
         }
     }
     for(int i = 0; i < rooms.size(); i++){
+        rooms[i] -> setPos(sf::Vector2f(rooms[i] -> getPos().x - smallest_x, rooms[i] -> getPos().y - smallest_y));
         window -> draw(*(rooms[i] -> getShape()));
     }
 

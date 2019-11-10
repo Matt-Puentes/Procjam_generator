@@ -46,9 +46,10 @@ class Room {
         sf::Vector2f position;
         sf::Shape *shape;
 
-		void makeRoomBig(sf::Vector2f init_pos, int min_size, int max_size);
-		void makeRoomSmall(sf::Vector2f init_pos, int min_size, int max_size);
-		void makeRoomCircle(sf::Vector2f init_pos, int min_size, int max_size);
-		void makeRoomTriangle(sf::Vector2f init_pos, int min_size, int max_size);
-		void makeRoomLong(sf::Vector2f init_pos, int width_max, int width_min, int height_max, int height_min);
+		void makeRoomBig(int min_size, int max_size);
+		void makeRoomSmall(int min_size, int max_size);
+		void makeRoomCircle(int min_size, int max_size);
+		void makeRoomTriangle(int min_size, int max_size);
+		void makeRoomLong(int width_max, int width_min, int height_max, int height_min);
+        sf::ConvexShape *makeConvexShape(int max_points, int min_points, int min_size, int max_size);
 };

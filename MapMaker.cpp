@@ -14,21 +14,14 @@ Map* MapMaker::getMap(int screen_pixel_width, int screen_pixel_height){
     fputs("------NEWMAP------\n", stdout);
     while(!roomsToGenerate.empty()){
         Room* current_room = roomsToGenerate.front();
-        printf("Iterating over room- this should room have %d neighbors\n", current_room -> neighbor_num);
-        printf("Current room neighbors: %d, %d\n", current_room -> getNeighborCount(), current_room -> neighbor_num);
         while(current_room -> getNeighborCount() < current_room -> neighbor_num){
-            printf("Current room neighbors: %d, %d\n", current_room -> getNeighborCount(), current_room -> neighbor_num);
-            
-            printf("aa\n");
+
             std::vector<Room::RoomDirection> freeDirs = current_room -> getFreeDirections();
-            printf("aa\n");
             if(freeDirs.size() == 0){
-                printf("THIS SHULDN'T HAPPEN\n");
                 break; 
             }
 
             int random = rand() % freeDirs.size();
-            printf("rand: %d\n", random);
             Room::RoomDirection dir = freeDirs[random];
             Room * new_room = new Room(Room::ROOM_UNDEFINED, dir, current_room);
 
