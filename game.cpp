@@ -44,7 +44,7 @@ int main()
                     regenerate = true;
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-                    std::string filename = "./screenshot_";
+                    std::string filename = "./screenshots/screenshot_";
                     std::time_t result = std::time(nullptr);
                     filename += std::to_string(result);
                     filename += ".png";

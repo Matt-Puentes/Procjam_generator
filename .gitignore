@@ -5,4 +5,4 @@ Debug/
 *.vcxproj.*
 x64/*
 game
-*.png
+screenshots/*
