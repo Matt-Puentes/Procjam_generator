@@ -3,7 +3,8 @@
 #include "MapMaker.h"
 #include <ctime>
 #include "MapExplorer.h"
-#include <unistd.h>
+#include <Windows.h>
+//#include <unistd.h>
 int main()
 {
 	srand(time(0));
@@ -145,7 +146,7 @@ int main()
             if(explorer -> done_exploring)
                 explore = false;
         }
-        usleep(100000);
+        Sleep(500);
     }
     return EXIT_SUCCESS;
 }
