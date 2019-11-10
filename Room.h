@@ -34,7 +34,6 @@ class Room {
         Room *parent;
         RoomType room_type;
         int neighbor_num;
-		RoomType room_type;
 
         bool explored;
 
@@ -61,7 +60,7 @@ class Room {
 		void makeRoomRectangle(int width_max, int width_min, int height_max, int height_min);
 
 		// Markov Chain
-		int markov_chain[7][7] =
+		static int markov_chain[7][7] =
 		{
 			{5, 35, 45, 55, 75, 80, 100}, // ROOM_BIG
 			{25, 35, 40, 45, 60, 85, 100}, // ROOM_SMALL
