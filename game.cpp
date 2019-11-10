@@ -47,6 +47,7 @@ int main()
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
                     explore = true;
+
                     // Create a new map explorer
                     delete explorer;
                     explorer = new MapExplorer(map);
@@ -79,8 +80,13 @@ int main()
             // Make a new shape
             delete background_shape;
             background_shape = Room::makeConvexShape(4, 3, 100, 150);
-        }
 
+            explore = true;
+
+            // Create a new map explorer
+            delete explorer;
+            explorer = new MapExplorer(map);
+        }
         if(explore){
             // explore = false;
             explorer -> exploreNode();

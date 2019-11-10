@@ -6,7 +6,7 @@ MapExplorer::MapExplorer(Map *new_map){
     steps_backtracking = 0;
     steps_wandering = 0;
     current_room = map -> getRootRoom();
-    explored_rooms.push_back(current_room);
+    // explored_rooms.push_back(current_room);
     done_exploring = false;
 }
 

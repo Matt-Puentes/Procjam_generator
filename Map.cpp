@@ -5,8 +5,7 @@ int normalRoomWidth = 100;
 class sfLine : public sf::Drawable
 {
 public:
-    sfLine(const sf::Vector2f& point1, const sf::Vector2f& point2):
-        color(sf::Color::White), thickness(5.f)
+    sfLine(const sf::Vector2f& point1, const sf::Vector2f& point2): color(sf::Color::White), thickness(5.f)
     {
         sf::Vector2f direction = point2 - point1;
         sf::Vector2f unitDirection = direction/std::sqrt(direction.x*direction.x+direction.y*direction.y);
@@ -21,6 +20,13 @@ public:
 
         for (int i=0; i<4; ++i)
             vertices[i].color = color;
+    }
+
+    void setColor(sf::Color c){
+        color = c;
+        for (int i=0; i<4; ++i)
+            vertices[i].color = color;
+
     }
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -72,7 +78,7 @@ bool Map::addRoom(Room* new_room){
         sf::FloatRect globalBounds = rooms[i] -> getShape() -> getGlobalBounds();
         if(globalBounds.intersects(new_globalBounds)){
             collision = rooms[i];
-            printf("Room ID %d has collision with Room ID %d\n", new_room -> roomID, rooms[i] -> roomID);
+            // printf("Room ID %d has collision with Room ID %d\n", new_room -> roomID, rooms[i] -> roomID);
             break;
         }
     }
@@ -80,16 +86,16 @@ bool Map::addRoom(Room* new_room){
     if(collision){
         if(new_room -> parent != NULL){
             new_room -> parent -> neighbors[new_room -> dir] = collision;
-            Room::RoomDirection reverse_dir = Room::UP_FROM_PARENT;
-            if(new_room -> dir == Room::UP_FROM_PARENT)
-                reverse_dir = Room::DOWN_FROM_PARENT;
-            if(new_room -> dir == Room::DOWN_FROM_PARENT)
-                reverse_dir = Room::UP_FROM_PARENT;
-            if(new_room -> dir == Room::RIGHT_FROM_PARENT)
-                reverse_dir = Room::LEFT_FROM_PARENT;
-            if(new_room -> dir == Room::LEFT_FROM_PARENT)
-                reverse_dir = Room::RIGHT_FROM_PARENT;
-            collision -> neighbors[new_room -> dir] = new_room -> parent;
+            // Room::RoomDirection reverse_dir = Room::UP_FROM_PARENT;
+            // if(new_room -> dir == Room::UP_FROM_PARENT)
+            //     reverse_dir = Room::DOWN_FROM_PARENT;
+            // if(new_room -> dir == Room::DOWN_FROM_PARENT)
+            //     reverse_dir = Room::UP_FROM_PARENT;
+            // if(new_room -> dir == Room::RIGHT_FROM_PARENT)
+            //     reverse_dir = Room::LEFT_FROM_PARENT;
+            // if(new_room -> dir == Room::LEFT_FROM_PARENT)
+            //     reverse_dir = Room::RIGHT_FROM_PARENT;
+            // collision -> neighbors[new_room -> dir] = new_room -> parent;
             return false;
         }
         delete new_room;
@@ -138,16 +144,18 @@ float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y
                     is_mutual = true;
                 }
             }
-            if(is_mutual){
-                sf::Vector2f l1v1(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y);
-                sf::Vector2f l1v2(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
-                sf::Vector2f l2v1(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
-                sf::Vector2f l2v2(rooms[i] -> getNeighbors()[j] -> getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
-                sfLine line1 = sfLine(l1v1, l1v2);
-                sfLine line2 = sfLine(l2v1, l2v2);
-                window->draw(line1);
-                window->draw(line2);
+            sf::Vector2f l1v1(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y);
+            sf::Vector2f l1v2(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
+            sf::Vector2f l2v1(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
+            sf::Vector2f l2v2(rooms[i] -> getNeighbors()[j] -> getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
+            sfLine line1 = sfLine(l1v1, l1v2);
+            sfLine line2 = sfLine(l2v1, l2v2);
+            if(!is_mutual){
+                line1.setColor(sf::Color::Black);
+                line2.setColor(sf::Color::Black);
             }
+            window->draw(line1);
+            window->draw(line2);
         }
     }
     for(int i = 0; i < rooms.size(); i++){
