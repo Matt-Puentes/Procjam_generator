@@ -32,10 +32,14 @@ class Room {
         std::vector<Room*> neighbors;
         RoomDirection dir;
         Room *parent;
+        RoomType room_type;
         int neighbor_num;
 		RoomType room_type;
 
+        bool explored;
+
         sf::Shape *getShape() const;
+        std::vector<Room*> getAllNeighbors() const;
         std::vector<Room*> getNeighbors() const;
         void setNeighbor(Room::RoomDirection dir, Room* room);
         int getNeighborCount() const;

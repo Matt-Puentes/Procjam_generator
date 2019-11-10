@@ -1,15 +1,14 @@
 #include <SFML/Graphics.hpp>
 #include "Map.h"
 #include "MapMaker.h"
-#include <chrono>
 #include <ctime>
+#include "MapExplorer.h"
 int main()
 {
-    int number_of_screenshots = 0;
 	srand(time(0));
-	// 1920x1080 is too big for my laptop screen, so I'm using these values
-	int window_width = 960;// 1920;
-	int window_height = 720;// 1080;
+    // 1920x1080 is too big for my laptop screen, so I'm using these values
+    int window_width = 960;// 1920;
+    int window_height = 720;// 1080;
 
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
@@ -26,9 +25,12 @@ int main()
     buffer.create(window_width, window_height);
 
     bool regenerate = true;
+    bool explore = false;
 
     Map *map = mapmaker.getMap(window_width, window_height);
     sf::Shape *background_shape = Room::makeConvexShape(4, 3, 100, 150);
+
+    MapExplorer *explorer = new MapExplorer(map);
 
     // Start the game loop
     while (window.isOpen()){
@@ -41,8 +43,13 @@ int main()
                 window.close();
             if (event.type == sf::Event::KeyPressed){
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
-                    printf("R pressed\n");
                     regenerate = true;
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+                    explore = true;
+                    // Create a new map explorer
+                    delete explorer;
+                    explorer = new MapExplorer(map);
                 }
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
                     std::string filename = "./screenshots/screenshot_";
@@ -60,7 +67,11 @@ int main()
                 }
             }
         }
+        
         if(regenerate){
+            regenerate = false;
+            explore = false;
+
             // Make a new map
             delete map;
             map = mapmaker.getMap(window_width, window_height);
@@ -68,7 +79,14 @@ int main()
             // Make a new shape
             delete background_shape;
             background_shape = Room::makeConvexShape(4, 3, 100, 150);
-            regenerate = false;
+        }
+
+        if(explore){
+            // explore = false;
+            explorer -> exploreNode();
+
+            if(explorer -> done_exploring)
+                explore = false;
         }
 
         std::vector<int> map_bounds = map -> getBounds();
@@ -83,7 +101,7 @@ int main()
         buffer.clear(sf::Color::Transparent);
 
         // Draw the map to the buffer
-        map -> drawToWindow(&buffer, map_bounds[0], map_bounds[2], 0);
+        map -> drawToWindow(&buffer, map_bounds[0], map_bounds[2], explorer -> getCurrentRoom() -> roomID);
         buffer.display();
         
         // Turn the buffer into a sprite

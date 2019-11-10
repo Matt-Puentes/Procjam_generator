@@ -39,6 +39,12 @@ Map::Map(){
     rooms.clear();
 }
 
+Room *Map::getRootRoom() const{
+    if(rooms.size() > 0)
+        return rooms[0];
+    return NULL;
+}
+
 Map::~Map(){
     for(int i = 0; i < rooms.size(); i++){
         delete rooms[i];
@@ -74,8 +80,19 @@ bool Map::addRoom(Room* new_room){
     if(collision){
         if(new_room -> parent != NULL){
             new_room -> parent -> neighbors[new_room -> dir] = collision;
+            Room::RoomDirection reverse_dir = Room::UP_FROM_PARENT;
+            if(new_room -> dir == Room::UP_FROM_PARENT)
+                reverse_dir = Room::DOWN_FROM_PARENT;
+            if(new_room -> dir == Room::DOWN_FROM_PARENT)
+                reverse_dir = Room::UP_FROM_PARENT;
+            if(new_room -> dir == Room::RIGHT_FROM_PARENT)
+                reverse_dir = Room::LEFT_FROM_PARENT;
+            if(new_room -> dir == Room::LEFT_FROM_PARENT)
+                reverse_dir = Room::RIGHT_FROM_PARENT;
+            collision -> neighbors[new_room -> dir] = new_room -> parent;
             return false;
         }
+        delete new_room;
     } else {
         rooms.push_back(new_room);
     }
@@ -115,7 +132,13 @@ std::vector<int> Map::getBounds() const{
 float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y, int selected_room_id) const{
     for(int i = 0; i < rooms.size(); i++){
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
-            if(rooms[i] -> getNeighbors()[j] != NULL){
+            bool is_mutual = false;
+            for(int x = 0; x < Room::ROOT; x++){
+                if(rooms[i] -> getNeighbors()[j] -> getNeighbors()[x] == rooms[i]){
+                    is_mutual = true;
+                }
+            }
+            if(is_mutual){
                 sf::Vector2f l1v1(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y);
                 sf::Vector2f l1v2(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
                 sf::Vector2f l2v1(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
@@ -145,7 +168,12 @@ float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y
 
         if(rooms[i] -> roomID == selected_room_id)
             shape -> setFillColor(sf::Color::Yellow);
+        if(rooms[i] -> explored == false)
+            shape -> setFillColor(sf::Color::Black);
+
         window -> draw(*shape);
+
+        shape -> setFillColor(oldColor);
     }
 
     return 1;
