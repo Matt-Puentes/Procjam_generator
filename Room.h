@@ -26,7 +26,7 @@ class Room {
             RIGHT_FROM_PARENT,
             ROOT
         };
-        Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* parent = NULL);
+        Room(Room::RoomType new_room_type, RoomDirection dir_from_parent, Room* parent = NULL);
         ~Room();
 
         std::vector<Room*> neighbors;
@@ -34,6 +34,7 @@ class Room {
         Room *parent;
         RoomType room_type;
         int neighbor_num;
+		RoomType room_type;
 
         bool explored;
 
@@ -58,4 +59,16 @@ class Room {
 		void makeRoomCircle(int min_size, int max_size);
 		void makeRoomTriangle(int min_size, int max_size);
 		void makeRoomRectangle(int width_max, int width_min, int height_max, int height_min);
+
+		// Markov Chain
+		int markov_chain[7][7] =
+		{
+			{5, 35, 45, 55, 75, 80, 100}, // ROOM_BIG
+			{25, 35, 40, 45, 60, 85, 100}, // ROOM_SMALL
+			{10, 25, 30, 45, 65, 80, 100}, // ROOM_CIRCLE
+			{10, 20, 25, 30, 55, 75, 100}, // ROOM_TRIANGLE
+			{25, 45, 55, 65, 70, 95, 100}, // ROOM_LONG
+			{5, 35, 45, 55, 75, 80, 100}, // ROOM_RECTANGLE
+			{25, 45, 55, 65, 70, 95, 100}, // ROOM_WIDE
+		};
 };
