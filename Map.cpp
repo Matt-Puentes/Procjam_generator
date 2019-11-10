@@ -138,50 +138,51 @@ std::vector<int> Map::getBounds() const{
 float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y, int selected_room_id) const{
     for(int i = 0; i < rooms.size(); i++){
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
-            bool is_mutual = false;
-            for(int x = 0; x < Room::ROOT; x++){
-                if(rooms[i] -> getNeighbors()[j] -> getAllNeighbors()[x] == rooms[i]){
-                    is_mutual = true;
+            if(rooms[i] -> explored != false){
+                bool is_mutual = true;
+                sf::Vector2f l1v1(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y);
+                sf::Vector2f l1v2(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
+                sf::Vector2f l2v1(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
+                sf::Vector2f l2v2(rooms[i] -> getNeighbors()[j] -> getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
+                sfLine line1 = sfLine(l1v1, l1v2);
+                sfLine line2 = sfLine(l2v1, l2v2);
+                if(!is_mutual){
+                    line1.setColor(sf::Color::Black);
+                    line2.setColor(sf::Color::Black);
                 }
+                window->draw(line1);
+                window->draw(line2);
             }
-            sf::Vector2f l1v1(rooms[i]->getPos().x - smallest_x, rooms[i]->getPos().y - smallest_y);
-            sf::Vector2f l1v2(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
-            sf::Vector2f l2v1(rooms[i]->getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
-            sf::Vector2f l2v2(rooms[i] -> getNeighbors()[j] -> getPos().x - smallest_x, rooms[i] -> getNeighbors()[j] -> getPos().y - smallest_y);
-            sfLine line1 = sfLine(l1v1, l1v2);
-            sfLine line2 = sfLine(l2v1, l2v2);
-            if(!is_mutual){
-                line1.setColor(sf::Color::Black);
-                line2.setColor(sf::Color::Black);
-            }
-            window->draw(line1);
-            window->draw(line2);
         }
     }
+    
     for(int i = 0; i < rooms.size(); i++){
         rooms[i] -> setPos(sf::Vector2f(rooms[i] -> getPos().x - smallest_x, rooms[i] -> getPos().y - smallest_y));
-        sf::Shape *shape = (rooms[i] -> getShape());
-        sf::Vector2f oldPos = shape -> getPosition();
-        sf::Color oldColor = shape -> getFillColor();
-        sf::Vector2f oldScale = shape -> getScale();
+        if(rooms[i] -> explored != false){
+            sf::Shape *shape = (rooms[i] -> getShape());
+            sf::Vector2f oldPos = shape -> getPosition();
+            sf::Color oldColor = shape -> getFillColor();
+            sf::Vector2f oldScale = shape -> getScale();
 
-        // Draw Shadow
-        shape -> setPosition(shape -> getPosition().x + 5, shape -> getPosition().y + 10);
-        shape -> setFillColor(sf::Color(0, 0, 0, 100));
-        window -> draw(*shape);
+            // Draw Shadow
+            shape -> setPosition(shape -> getPosition().x + 5, shape -> getPosition().y + 10);
+            shape -> setFillColor(sf::Color(0, 0, 0, 100));
+            window -> draw(*shape);
 
-        // Reset
-        shape -> setPosition(oldPos);
-        shape -> setFillColor(oldColor);
 
-        if(rooms[i] -> roomID == selected_room_id)
-            shape -> setFillColor(sf::Color::Yellow);
-        if(rooms[i] -> explored == false)
-            shape -> setFillColor(sf::Color::Black);
+            // Reset
+            shape -> setPosition(oldPos);
+            shape -> setFillColor(oldColor);
 
-        window -> draw(*shape);
+            if(rooms[i] -> roomID == selected_room_id)
+                shape -> setFillColor(sf::Color::Yellow);
+            if(rooms[i] -> explored == false)
+                shape -> setFillColor(sf::Color::Transparent);
 
-        shape -> setFillColor(oldColor);
+            window -> draw(*shape);
+
+            shape -> setFillColor(oldColor);
+        }
     }
 
     return 1;

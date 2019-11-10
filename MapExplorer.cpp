@@ -6,7 +6,8 @@ MapExplorer::MapExplorer(Map *new_map){
     steps_backtracking = 0;
     steps_wandering = 0;
     current_room = map -> getRootRoom();
-    // explored_rooms.push_back(current_room);
+    explored_rooms.push_back(current_room);
+    current_room -> explored = true;
     done_exploring = false;
 }
 
@@ -50,19 +51,18 @@ int MapExplorer::exploreNode(){
         }
     }
 
+    current_room -> explored = true;
+
     if(explored_rooms.size() == map -> getRooms().size()){
         done_exploring = true;
         printf("It took me %d steps to explore this dungeon of size %lu!\n", steps_taken, map -> getRooms().size());
         printf("%.2f%% of my steps were spent backtracking.\n", ((double)steps_backtracking/(double)steps_taken));
     }
-
-    if(steps_wandering > (map -> getRooms().size() * 5)){
+    else if(steps_wandering > (map -> getRooms().size() * 5)){
         done_exploring = true;
         printf("I've been wandering for %d steps to explore this dungeon of size %lu...\n", steps_taken, map -> getRooms().size());
         printf("There are probably unreachable rooms in this dungeon.\n");
     }
-
-    current_room -> explored = true;
 
     return 1;
 }
