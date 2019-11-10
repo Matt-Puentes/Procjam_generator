@@ -1,10 +1,11 @@
 #include "Room.h"
 #include <stdio.h>
 
-Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* new_parent){
+Room::Room(Room::RoomType new_room_type, RoomDirection dir_from_parent, Room* new_parent){
     static int roomCount = 0;
     roomID = roomCount + 0;
     roomCount++;
+	room_type = new_room_type;
 
     dir = dir_from_parent;
     parent = new_parent;
@@ -16,8 +17,24 @@ Room::Room(Room::RoomType room_type, RoomDirection dir_from_parent, Room* new_pa
     neighbors.push_back(NULL);
 
     // Create room shape according to type
-    if(room_type == ROOM_UNDEFINED)
-        room_type = static_cast<Room::RoomType>(rand() % ROOM_UNDEFINED);
+	if (room_type == ROOM_UNDEFINED) {
+		int chance = rand() % 100;
+		RoomType parentType = new_parent->room_type;
+		if (chance < markov_chain[parentType][0])
+			room_type = ROOM_BIG;
+		else if (chance < markov_chain[parentType][1])
+			room_type = ROOM_SMALL;
+		else if (chance < markov_chain[parentType][2])
+			room_type = ROOM_CIRCLE;
+		else if (chance < markov_chain[parentType][3])
+			room_type = ROOM_TRIANGLE;
+		else if (chance < markov_chain[parentType][4])
+			room_type = ROOM_LONG;
+		else if (chance < markov_chain[parentType][5])
+			room_type = ROOM_RECTANGLE;
+		else if (chance < markov_chain[parentType][6])
+			room_type = ROOM_WIDE;
+	}
     if(room_type == ROOM_BIG)
         makeRoomBig(75, 150);
     else if(room_type == ROOM_SMALL)
@@ -209,7 +226,7 @@ void Room::makeRoomBig(int min_size, int max_size){
 
 void Room::makeRoomSmall(int min_size, int max_size) {
     shape = makeConvexShape(9, 5, min_size, max_size);
-	neighbor_num = rand() % 2;
+	neighbor_num = rand() % 2 + 1;
 }
 
 void Room::makeRoomTriangle(int min_size, int max_size) {

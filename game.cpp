@@ -7,8 +7,9 @@ int main()
 {
     int number_of_screenshots = 0;
 	srand(time(0));
-    int window_width = 1920;
-    int window_height = 1080;
+	// 1920x1080 is too big for my laptop screen, so I'm using these values
+	int window_width = 960;// 1920;
+	int window_height = 720;// 1080;
 
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
