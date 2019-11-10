@@ -108,7 +108,7 @@ int main()
 
         // Draw the map to the buffer
         map -> drawToWindow(&buffer, map_bounds[0], map_bounds[2], explorer -> getCurrentRoom() -> roomID);
-        buffer.display();
+		buffer.display();
         
         // Turn the buffer into a sprite
         const sf::Texture& texture = buffer.getTexture();

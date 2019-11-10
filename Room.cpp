@@ -103,6 +103,7 @@ std::vector<Room*> Room::getAllNeighbors() const{
 
 std::vector<Room*> Room::getNeighbors() const{
     std::vector<Room*> filtered_neighbors;
+	filtered_neighbors.clear();
 
     if(neighbors[Room::UP_FROM_PARENT] != NULL)
         filtered_neighbors.push_back(neighbors[Room::UP_FROM_PARENT]);

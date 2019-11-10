@@ -140,7 +140,7 @@ float Map::drawToWindow(sf::RenderTarget *window, int smallest_x, int smallest_y
         for(int j = 0; j < rooms[i] -> getNeighbors().size(); j++){
             bool is_mutual = false;
             for(int x = 0; x < Room::ROOT; x++){
-                if(rooms[i] -> getNeighbors()[j] -> getNeighbors()[x] == rooms[i]){
+                if(rooms[i] -> getNeighbors()[j] -> getAllNeighbors()[x] == rooms[i]){
                     is_mutual = true;
                 }
             }
